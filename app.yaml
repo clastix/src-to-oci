@@ -1,0 +1,18 @@
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: simpleapp
+  namespace: default
+spec:
+  deploy:
+  - kapp: {}
+  fetch:
+  - git:
+      url: https://github.com/maxgio92/src-to-oci
+      ref: origin/main
+  serviceAccountName: kapp-app-simpleapp
+  template:
+  - ytt:
+      paths:
+      - config
+  - kbld: {}

@@ -1,0 +1,6 @@
+debug = true
+[worker.containerd]
+  namespace = "k8s.io"
+[registry."registry.default:5000"]
+  http = true
+  insecure = true

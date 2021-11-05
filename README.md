@@ -1,6 +1,56 @@
 # Give me your code: I give you back your OCI image
 
-Building and shipping images like a pro!
+#### Building and shipping images like a pro!
+
+## The architecture
+
+```
+                    │
+          Consumer  │   Platform
+          space     │   space
+                    │                        ┌──────────────────────────────────┐
+                    │                        │  Kapp Controller                 │
+                    │                        │                      | Reconcile |
+┌───────────────┐   │   ┌───────────────┐    │    ┌─────────────┐   │           │
+│  App Source   │   │   │  App Config   │    │    │             │   │           │
+│  Repository   │   │   │ ┌──────────┐  │    │    │ Ytt         │   │           │
+│ ┌──────────┐  |◄──┼───┼─┤ Fetch    │  │◄───┤    │             │   │           │
+│ │ Source   │  │   │   │ │ Config   |  |    │    └──────┬──────┘   │           │
+│ │ code     │  │   │   │ ├──────────┤  │    │           │ Templating           │
+│ ├──────────┤  │   │   │ │ Build    │  │    │    ┌──────▼──────┐   │           │
+│ │ Container│  │   │   │ │ Config   │  │    │    │             │   │ Image digest resolution
+│ │ file     │  │   │   │ ├──────────┤  │    │    │ Kbld        │───┼───────────┬─────────────►
+│ └──────────┘  │   │   │ │ Deploy   │  │    │    │             │   │ Config recording
+│               │   │   │ │ Config   │  │    │    └──────┬──────┘   ▼           │
+│               │   │   │ └──────────┘  │    │       Orchestrating  |           |
+│               │   │   │               │    │    ┌──────▼──────┐   │           │
+└───────────────┘   │   └───────────────┘    │    │             │   │           │
+                    │                        │    │ Buildkit    │   │           │
+                    │                        │    │             │   │           │
+                    │                        │    └──────┬──────┘   │           │
+                    │                        │           │ Image building       │
+                    │                        │    ┌──────▼──────┐   │           │
+                    │                        │    │             │   │           │
+                    │                        │    │ OCI Image   │   │           │
+                    │                        │    │             │   │           │
+                    │                        │    └──────┬──────┘   │           │
+                    │                        │           │ Image pushing        │
+┌───────────────┐   │                        │    ┌──────▼──────┐   │           │
+│               │   │                        │    │             │   │           │
+│  App Image    |◄──┼────────────────────────┼────┤ OCI Registry│   │ Kbld      │
+│               │   │                        │    │             │   │ config    │
+└───────────────┘   │                        │    └─────────────┘   │ result    |
+                    │                        │                      ▼           │
+┌───────────────┐   │                        │    ┌────────────────────┐        │
+│               │   │                        │    │                    |        │
+│  App API      |◄──┼────────────────────────┼────┤ Kapp deploy        |        |
+│               │   │                        │    │                    |        |
+└───────────────┘   │                        │    └────────────────────┘        │
+                    │                        │                                  │
+                    │                        └──────────────────────────────────┘
+                    │
+                    │
+```
 
 ## Prerequisite
 

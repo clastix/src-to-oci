@@ -14,5 +14,4 @@ kind: Config
 destinations:
 - image: simple-app
   newImage: #@ data.values.push_images_repo
-  tags:
-  - latest
+

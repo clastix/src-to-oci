@@ -23,7 +23,7 @@ reqs/kapp-controller: reqs/kapp
 
 .PHONY: reqs/buildkit/server
 reqs/buildkit/server: reqs/buildkit/client
-	$(kubectl) buildkit create --config ./buildkit/config.toml
+	$(kubectl) buildkit -n kapp-controller create --config ./buildkit/config.toml
 	$(kubectl) -n kapp-controller create configmap buildkit \
 		--from-file=./buildkit/config.toml --dry-run=client -o yaml \
 		| $(kubectl) apply -f -

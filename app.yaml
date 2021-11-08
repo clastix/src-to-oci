@@ -11,7 +11,7 @@ spec:
       ref: origin/main
   - git:
       url: https://github.com/maxgio92/src-to-oci-config
-      ref: origin/main
+      ref: origin/test
   template:
   - ytt:
       paths:

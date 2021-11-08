@@ -4,15 +4,18 @@ metadata:
   name: simpleapp
   namespace: default
 spec:
-  deploy:
-  - kapp: {}
+  serviceAccountName: kapp-app-simpleapp
   fetch:
   - git:
-      url: https://github.com/maxgio92/src-to-oci
+      url: https://github.com/maxgio92/src-to-oci-source
       ref: origin/main
-  serviceAccountName: kapp-app-simpleapp
+  - git:
+      url: https://github.com/maxgio92/src-to-oci-config
+      ref: origin/main
   template:
   - ytt:
       paths:
-      - config
+      - "1"
   - kbld: {}
+  deploy:
+  - kapp: {}

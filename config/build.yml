@@ -4,7 +4,7 @@ apiVersion: kbld.k14s.io/v1alpha1
 kind: Config
 sources:
 - image: simple-app
-  path: .
+  path: ./0
   kubectlBuildKit: {}
 
 #@ if/end data.values.push_images_repo:

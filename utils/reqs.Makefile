@@ -18,19 +18,31 @@ reqs/local: reqs/cluster reqs/buildkit-for-kubectl reqs/cluster-registry
 reqs/cluster: kind
 
 .PHONY: reqs/kapp-controller
-reqs/kapp-controller:
-	@$(kapp) deploy -y -a kc -f ./config/kapp-controller
+reqs/kapp-controller: reqs/kapp
+	@$(kapp) deploy -y -a kc -f ./kapp-controller
+
+.PHONY: reqs/buildkit/server
+reqs/buildkit/server: reqs/buildkit/client
+	$(kubectl) buildkit create --config ./buildkit/config.toml
+	$(kubectl) -n kapp-controller create configmap buildkit \
+		--from-file=./buildkit/config.toml --dry-run=client -o yaml \
+		| $(kubectl) apply -f -
+
+.PHONY: reqs/buildkit/rbac
+reqs/buildkit/rbac:
+	$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/clusterrole.yaml
+	$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/rolebinding.yaml
 
 # Local run requirements
 
-.PHONY: reqs/buildkit-for-kubectl
-reqs/buildkit-for-kubectl:
+.PHONY: reqs/buildkit/client
+reqs/buildkit/client:
 	{ hash kubectl-build && hash kubectl-buildkit; } \
 		|| curl -sL $(buildkit_cli_url) | tar -C /usr/local/bin -zxvf -
 
-.PHONY: reqs/cluster-registry
-reqs/cluster-registry:
-	$(kapp) deploy --yes -a registry -f ./config/registry/cluster-registry.yml
+.PHONY: reqs/registry
+reqs/registry: reqs/kapp
+	$(kapp) deploy --yes -a registry -f ./registry
 
 .PHONY: reqs/ytt
 reqs/ytt: bin := ytt
@@ -62,6 +74,7 @@ reqs/kapp:
 		install $$TMPDIR/$(bin) $(HOME)/.local/bin/ && \
 		rm -r $$TMPDIR; }
 
+.PHONY: reqs/kwt
 reqs/kwt: bin := kwt
 reqs/kwt: bin_url := https://github.com/vmware-tanzu/carvel-kwt/releases/download/v0.0.6/kwt-linux-amd64
 reqs/kwt:

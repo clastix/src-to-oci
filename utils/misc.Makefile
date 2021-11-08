@@ -1,10 +1,10 @@
 .PHONY: kind
 kind:
-	@$(kind) create cluster 2> /dev/null || true
+	@$(kind) create cluster --name oci || true
 
 .PHONY: cleanup
 cleanup:
-	@$(kapp) delete --yes -a $(APP)
+	@$(kind) delete cluster --name oci || true
 
 .PHONY: purge
 purge: cleanup
@@ -23,3 +23,19 @@ copy-images:
 local-registry:
 	@docker run -d --restart=always -p "127.0.0.1:5001:5000" --name registry registry:2 \
 	2> /dev/null || true
+
+.PHONY: buildkit/build
+buildkit/build: reqs
+	$(kubectl) buildkit create --config ./config/buildkit/config.toml
+	$(kubectl) buildkit build --push -t $(IMAGE) .
+
+.PHONY: ytt/template
+ytt/template:
+	@$(ytt) -f ./config
+
+.PHONY: kbld/build
+kbld/build:
+	$(MAKE) -s template | $(kbld) -f -
+
+.PHONY: build
+build: kbld/build

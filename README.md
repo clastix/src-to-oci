@@ -160,3 +160,17 @@ curl -s localhost:5000/v2/dkalinin/k8s-simple-app/tags/list | jq
   ]
 }
 ```
+
+## Two-steps run
+
+### Configure the requisites
+
+```sh
+make reqs
+```
+
+### Configure the app
+
+```sh
+make app
+```

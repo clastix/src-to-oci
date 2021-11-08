@@ -7,17 +7,13 @@ CLUSTER_REGISTRY := registry:5000
 IMAGE ?= $(CLUSTER_REGISTRY)/$(APP):$(VERSION)
 
 .PHONY: reqs
-reqs: reqs/remote
+reqs: reqs/cluster reqs/kapp-controller reqs/buildkit/server reqs/registry reqs/buildkit/rbac
 
-.PHONY: build
-build: reqs
-	$(kubectl) buildkit create --config ./config/buildkit/config.toml
-	$(kubectl) buildkit build --push -t $(IMAGE) .
+.PHONY: app/rbac
+app/rbac:
+	@$(kubectl) -n default apply -f ./rbac/simpleapp/serviceaccount.yaml
+	@$(kubectl) -n default apply -f ./rbac/simpleapp/rolebinding.yaml
 
-.PHONY: template
-template:
-	@$(ytt) -f ./config
-
-.PHONY: kbld
-kbld: reqs
-	$(MAKE) -s template | $(kbld) -f -
+.PHONY: app
+app: app/rbac
+	@$(kubectl) -n default apply -f ./app.yaml

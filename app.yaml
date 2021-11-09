@@ -7,15 +7,21 @@ spec:
   serviceAccountName: kapp-app-simpleapp
   fetch:
   - git:
-      url: https://github.com/maxgio92/src-to-oci-source
+      url: https://github.com/clastix/src-to-oci-source
       ref: origin/main
   - git:
-      url: https://github.com/maxgio92/src-to-oci-config
+      url: https://github.com/clastix/src-to-oci-build
+      ref: origin/test
+  - git:
+      url: https://github.com/clastix/src-to-oci-deploy
       ref: origin/test
   template:
   - ytt:
       paths:
-      - "1"
-  - kbld: {}
+      - "./1"
+      - "./2"
+  - kbld:
+      paths:
+      - "-"
   deploy:
   - kapp: {}

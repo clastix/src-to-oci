@@ -1,9 +1,0 @@
-#@data/values
----
-svc_port: 80
-app_port: 80
-hello_msg: stranger
-
-#! Optionally specify image repo to push image to.
-#! If not specified, image will not be pushed to a registry
-push_images_repo: "registry.default:5000/maxgio92/k8s-simple-app"

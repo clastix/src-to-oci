@@ -14,7 +14,7 @@ spec:
       ref: origin/main
   - git:
       url: https://github.com/clastix/src-to-oci-deploy
-      ref: origin/test
+      ref: origin/main
   template:
   - ytt:
       paths:

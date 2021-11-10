@@ -1,25 +1,33 @@
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
-  name: simpleapp
+  name: go-simpleapp
   namespace: default
 spec:
   serviceAccountName: kapp-app-simpleapp
   fetch:
   - git:
-      url: https://github.com/clastix/src-to-oci-source
+      url: https://github.com/clastix/src-to-oci-go-simpleapp
       ref: origin/main
   - git:
       url: https://github.com/clastix/src-to-oci-build
-      ref: origin/main
+      ref: origin/templated-build
   - git:
       url: https://github.com/clastix/src-to-oci-deploy
-      ref: origin/main
+      ref: origin/templated-build
   template:
   - ytt:
       paths:
       - "./1"
       - "./2"
+      inline:
+        paths:
+          values2.yml: |-
+            #@data/values
+            ---
+            programming_language_runtime: go
+            push_images_repo: docker.io/prometherion/go-simpleapp
+            replicas: 1
   - kbld: {}
   deploy:
   - kapp: {}

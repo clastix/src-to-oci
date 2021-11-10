@@ -1,0 +1,33 @@
+apiVersion: kappctrl.k14s.io/v1alpha1
+kind: App
+metadata:
+  name: nodejs-simpleapp
+  namespace: default
+spec:
+  serviceAccountName: kapp-app-simpleapp
+  fetch:
+  - git:
+      url: https://github.com/clastix/src-to-oci-nodejs-simpleapp
+      ref: origin/main
+  - git:
+      url: https://github.com/clastix/src-to-oci-build
+      ref: origin/templated-build
+  - git:
+      url: https://github.com/clastix/src-to-oci-deploy
+      ref: origin/templated-build
+  template:
+  - ytt:
+      paths:
+      - "./1"
+      - "./2"
+      inline:
+        paths:
+          values2.yml: |-
+            #@data/values
+            ---
+            programming_language_runtime: nodejs
+            push_images_repo: docker.io/prometherion/nodejs-simpleapp
+            replicas: 1
+  - kbld: {}
+  deploy:
+  - kapp: {}

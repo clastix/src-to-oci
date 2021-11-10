@@ -20,8 +20,6 @@ spec:
       paths:
       - "./1"
       - "./2"
-  - kbld:
-      paths:
-      - "-"
+  - kbld: {}
   deploy:
   - kapp: {}

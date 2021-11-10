@@ -23,26 +23,26 @@ reqs/kapp-controller: reqs/kapp
 
 .PHONY: reqs/buildkit/server
 reqs/buildkit/server: reqs/buildkit/client
-	$(kubectl) buildkit -n kapp-controller create --config ./buildkit/config.toml
-	$(kubectl) -n kapp-controller create configmap buildkit \
+	@$(kubectl) buildkit -n kapp-controller create --config ./buildkit/config.toml
+	@$(kubectl) -n kapp-controller create configmap buildkit \
 		--from-file=./buildkit/config.toml --dry-run=client -o yaml \
 		| $(kubectl) apply -f -
 
 .PHONY: reqs/buildkit/rbac
 reqs/buildkit/rbac:
-	$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/clusterrole.yaml
-	$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/rolebinding.yaml
+	@$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/clusterrole.yaml
+	@$(kubectl) -n kapp-controller apply -f ./rbac/kubectl-buildkit/rolebinding.yaml
 
 # Local run requirements
 
 .PHONY: reqs/buildkit/client
 reqs/buildkit/client:
-	{ hash kubectl-build && hash kubectl-buildkit; } \
+	@{ hash kubectl-build && hash kubectl-buildkit; } \
 		|| curl -sL $(buildkit_cli_url) | tar -C /usr/local/bin -zxvf -
 
 .PHONY: reqs/registry
 reqs/registry: reqs/kapp
-	$(kapp) deploy --yes -a registry -f ./registry
+	@$(kapp) deploy --yes -a registry -f ./registry
 
 .PHONY: reqs/ytt
 reqs/ytt: bin := ytt

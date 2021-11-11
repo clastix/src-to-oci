@@ -2,6 +2,26 @@
 
 #### Building and shipping images like a pro!
 
+## Quickstart
+
+1. **Configure the requisites**
+
+```sh
+make reqs
+```
+
+2. **Configure the identity that the controller will assume to reconcile a sample app**
+
+```sh
+make app/rbac
+```
+
+3. **Build and deploy (Go and NodeJS) sample apps**
+
+```sh
+kubectl apply -f ./{go,nodejs}-simpleapp.yaml
+```
+
 ## The architecture
 
 ```
@@ -159,18 +179,4 @@ curl -s localhost:5000/v2/dkalinin/k8s-simple-app/tags/list | jq
     "rand-1636035841539707777-21542242238171-simple-app"
   ]
 }
-```
-
-## Two-steps run
-
-### Configure the requisites
-
-```sh
-make reqs
-```
-
-### Configure the app
-
-```sh
-make app
 ```

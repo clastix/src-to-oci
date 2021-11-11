@@ -37,10 +37,10 @@ kubectl apply -f ./{go,nodejs}-simpleapp.yaml
 │ ┌──────────┐  |◄──┼───┼─┤ Fetch    │  │◄───┤    │             │   │           │
 │ │ Source   │  │   │   │ │ Config   |  |    │    └──────┬──────┘   │           │
 │ │ code     │  │   │   │ ├──────────┤  │    │           │ Templating           │
-│ ├──────────┤  │   │   │ │ Build    │  │    │    ┌──────▼──────┐   │           │
-│ │ Container│  │   │   │ │ Config   │  │    │    │             │   │ Image digest resolution
-│ │ file     │  │   │   │ ├──────────┤  │    │    │ Kbld        │───┼───────────┬─────────────►
-│ └──────────┘  │   │   │ │ Deploy   │  │    │    │             │   │ Config recording
+│ └──────────┘  │   │   │ │ Build    │  │    │    ┌──────▼──────┐   │           │
+│               │   |   | | Config   │  │    │    │             │   │ Image digest resolution
+│               │   │   │ ├──────────┤  │    │    │ Kbld        │───┼───────────┬─────────────►
+│               │   │   │ │ Deploy   │  │    │    │             │   │ Config recording
 │               │   │   │ │ Config   │  │    │    └──────┬──────┘   ▼           │
 │               │   │   │ └──────────┘  │    │       Orchestrating  |           |
 │               │   │   │               │    │    ┌──────▼──────┐   │           │

@@ -16,7 +16,13 @@ make reqs
 make app/rbac
 ```
 
-3. **Build and deploy (Go and NodeJS) sample apps**
+3. **(Optional) Configure credentials to push to external OCI registries**
+
+```sh
+kubectl create secret -n kapp-controller docker-registry buildkit --docker-server=<Registry URL> --docker-username=<Registry username> --docker-password=<Registry password>
+```
+
+4. **Build and deploy (Go and NodeJS) sample apps**
 
 ```sh
 kubectl apply -f ./{go,nodejs}-simpleapp.yaml

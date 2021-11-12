@@ -40,10 +40,6 @@ reqs/buildkit/client:
 	@{ hash kubectl-build && hash kubectl-buildkit; } \
 		|| curl -sL $(buildkit_cli_url) | tar -C /usr/local/bin -zxvf -
 
-.PHONY: reqs/registry
-reqs/registry: reqs/kapp
-	@$(kapp) deploy --yes -a registry -f ./registry
-
 .PHONY: reqs/ytt
 reqs/ytt: bin := ytt
 reqs/ytt: bin_url := https://github.com/vmware-tanzu/carvel-ytt/releases/download/v0.37.0/ytt-linux-amd64

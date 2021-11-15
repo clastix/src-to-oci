@@ -25,6 +25,7 @@ spec:
           values2.yml: |-
             #@data/values
             ---
+            app_name: go-simleapp
             programming_language_runtime: go
             push_images_repo: docker.io/prometherion/go-simpleapp
             replicas: 1

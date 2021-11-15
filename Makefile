@@ -8,7 +8,3 @@ reqs: reqs/cluster reqs/kapp-controller reqs/regsitry-creds reqs/buildkit/server
 app/rbac:
 	@$(kubectl) -n default apply -f ./rbac/simpleapp/serviceaccount.yaml
 	@$(kubectl) -n default apply -f ./rbac/simpleapp/rolebinding.yaml
-
-.PHONY: app
-app: app/rbac
-	@$(kubectl) -n default apply -f ./app.yaml

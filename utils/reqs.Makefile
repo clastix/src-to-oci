@@ -8,6 +8,10 @@ buildkit_cli_url ?= https://github.com/vmware-tanzu/buildkit-cli-for-kubectl/rel
 
 # Cluster run requirements
 
+.PHONY: reqs/registry-creds
+reqs/regsitry-creds:
+	@./utils/create-secret-docker.sh
+
 .PHONY: reqs/remote
 reqs/remote: reqs/cluster reqs/kapp-controller reqs/cluster-registry
 
@@ -19,7 +23,7 @@ reqs/cluster: kind
 
 .PHONY: reqs/kapp-controller
 reqs/kapp-controller: reqs/kapp
-	@$(kapp) deploy -y -a kc -f ./kapp-controller
+	@$(kapp) deploy -y -a kc -f ./kapp-controller/kapp-controller.yaml
 
 .PHONY: reqs/buildkit/server
 reqs/buildkit/server: reqs/buildkit/client

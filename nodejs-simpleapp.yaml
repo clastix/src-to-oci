@@ -25,6 +25,7 @@ spec:
           values2.yml: |-
             #@data/values
             ---
+            app_name: nodejs-simpleapp
             programming_language_runtime: nodejs
             push_images_repo: docker.io/prometherion/nodejs-simpleapp
             replicas: 1

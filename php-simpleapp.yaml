@@ -1,13 +1,13 @@
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
-  name: go-simpleapp
+  name: php-simpleapp
   namespace: default
 spec:
   serviceAccountName: kapp-app-simpleapp
   fetch:
   - git:
-      url: https://github.com/clastix/src-to-oci-go-simpleapp
+      url: https://github.com/clastix/src-to-oci-php-simpleapp
       ref: origin/main
   - git:
       url: https://github.com/clastix/src-to-oci-build
@@ -25,10 +25,11 @@ spec:
           values2.yml: |-
             #@data/values
             ---
-            app_name: go-simpleapp
-            programming_language_runtime: go
-            push_images_repo: quay.io/maxgio92/go-simpleapp
+            app_name: php-simpleapp
+            programming_language_runtime: php
+            push_images_repo: quay.io/maxgio92/php-simpleapp
             replicas: 1
+            expose_svc: "true"
   - kbld: {}
   deploy:
   - kapp: {}

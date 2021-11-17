@@ -1,13 +1,13 @@
 apiVersion: kappctrl.k14s.io/v1alpha1
 kind: App
 metadata:
-  name: go-simpleapp
+  name: rust-simpleapp
   namespace: default
 spec:
   serviceAccountName: kapp-app-simpleapp
   fetch:
   - git:
-      url: https://github.com/clastix/src-to-oci-go-simpleapp
+      url: https://github.com/clastix/src-to-oci-rust-simpleapp
       ref: origin/main
   - git:
       url: https://github.com/clastix/src-to-oci-build
@@ -25,9 +25,9 @@ spec:
           values2.yml: |-
             #@data/values
             ---
-            app_name: go-simpleapp
-            programming_language_runtime: go
-            push_images_repo: quay.io/maxgio92/go-simpleapp
+            app_name: rust-simpleapp
+            programming_language_runtime: rust
+            push_images_repo: quay.io/maxgio92/rust-simpleapp
             replicas: 1
   - kbld: {}
   deploy:

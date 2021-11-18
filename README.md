@@ -38,17 +38,17 @@ kubectl apply -f ./{go,nodejs}-simpleapp.yaml
                     │                        │  Kapp Controller                 │
                     │                        │                      | Reconcile |
 ┌───────────────┐   │   ┌───────────────┐    │    ┌─────────────┐   │           │
-│  App Source   │   │   │  App Config   │    │    │             │   │           │
-│  Repository   │   │   │ ┌──────────┐  │    │    │ Ytt         │   │           │
+│  WebService   │   │   │  App Resource │    │    │             │   │           │
+│  Resource     │   │   │ ┌──────────┐  │    │    │ Ytt         │   │           │
 │ ┌──────────┐  |◄──┼───┼─┤ Fetch    │  │◄───┤    │             │   │           │
 │ │ Source   │  │   │   │ │ Config   |  |    │    └──────┬──────┘   │           │
 │ │ code     │  │   │   │ ├──────────┤  │    │           │ Templating           │
 │ └──────────┘  │   │   │ │ Build    │  │    │    ┌──────▼──────┐   │           │
-│               │   |   | | Config   │  │    │    │             │   │ Image digest resolution
-│               │   │   │ ├──────────┤  │    │    │ Kbld        │───┼───────────┬─────────────►
-│               │   │   │ │ Deploy   │  │    │    │             │   │ Config recording
-│               │   │   │ │ Config   │  │    │    └──────┬──────┘   ▼           │
-│               │   │   │ └──────────┘  │    │       Orchestrating  |           |
+│ ┌──────────┐  │   |   | | Config   │  │    │    │             │   │ Image digest resolution
+│ │ Builder  │  │   │   │ ├──────────┤  │    │    │ Kbld        │───┼───────────┬─────────────►
+│ │ config   │  │   │   │ │ Deploy   │  │    │    │             │   │ Config recording
+│ │          │  │   │   │ │ Config   │  │    │    └──────┬──────┘   ▼           │
+│ └──────────┘  │   │   │ └──────────┘  │    │       Orchestrating  |           |
 │               │   │   │               │    │    ┌──────▼──────┐   │           │
 └───────────────┘   │   └───────────────┘    │    │             │   │           │
                     │                        │    │ Buildkit    │   │           │
@@ -115,21 +115,10 @@ cat ./buildkit/config.toml
 debug = true
 [worker.containerd]
   namespace = "k8s.io"
-[registry."registry.default:5000"]
-  http = true
-  insecure = true
 ```
 
 ```shell
 kubectl -n kapp-controller create configmap buildkit --from-file=./buildkit/config.toml --dry-run=client -o yaml | kubectl apply -f -
-```
-
-### Deploy the Registry
-
-We have to host our images, the easier way is having a local registry.
-
-```shell
-kubectl -n default apply -f ./registry
 ```
 
 ### Ensure the `kubectl-buildkit` RBAC is well configured

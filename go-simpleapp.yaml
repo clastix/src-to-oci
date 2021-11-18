@@ -11,7 +11,7 @@ spec:
       ref: origin/main
   - git:
       url: https://github.com/clastix/src-to-oci-build
-      ref: origin/main
+      ref: origin/feat/language_version
   - git:
       url: https://github.com/clastix/src-to-oci-deploy
       ref: origin/main
@@ -27,6 +27,7 @@ spec:
             ---
             app_name: go-simpleapp
             programming_language_runtime: go
+            programming_language_runtime_version: "1.16.10"
             push_images_repo: quay.io/maxgio92/go-simpleapp
             replicas: 1
   - kbld: {}
